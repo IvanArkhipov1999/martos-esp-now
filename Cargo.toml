@@ -7,13 +7,10 @@ edition = "2021"
 debug = true
 
 [dependencies]
-# Specifying Martos version
-#martos = "0.3.0"
-# Specifying current Martos version path for ci
-martos = { path = "../../../../" }
-esp-hal = "0.18.0"
+martos = "0.3.0"
+esp32-hal = "0.18.0"
 esp-backtrace = { version = "0.14.1", features = ["esp32", "panic-handler", "exception-handler", "println"] }
 esp-println = { version = "0.11.0", features = ["esp32"] }
 
 [features]
-default = ["esp-hal/esp32", "esp-backtrace/esp32", "esp-println/esp32"]
+default = ["esp32-hal/xtal-40mhz"]
