@@ -48,7 +48,7 @@ fn loop_fn() {
         let mut next_send_time = NEXT_SEND_TIME.take().expect("Next send time error in main");
         if current_millis() >= next_send_time {
             next_send_time = current_millis() + 5 * 1000;
-            println!("Send");
+            println!("Send value: {:?}", value);
             let status = esp_now
                 .send(&BROADCAST_ADDRESS, &[value.try_into().unwrap()])
                 .unwrap()
