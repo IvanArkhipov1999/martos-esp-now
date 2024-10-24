@@ -41,7 +41,7 @@ fn loop_fn() {
             let data = r.get_data();
             let received_value = data[0];
             // Local voting protocol
-            value = (value + received_value) / 2;
+            // value = (value + received_value) / 2;
         }
 
         // Send value to neighbours
@@ -50,7 +50,7 @@ fn loop_fn() {
             next_send_time = current_millis() + 5 * 1000;
             println!("Send value: {:?}", value);
             let status = esp_now
-                .send(&BROADCAST_ADDRESS, &[value.try_into().unwrap()])
+                .send(&BROADCAST_ADDRESS, &[value])
                 .unwrap()
                 .wait();
             println!("Send broadcast status: {:?}", status)
