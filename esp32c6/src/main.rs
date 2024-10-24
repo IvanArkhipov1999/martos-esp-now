@@ -34,16 +34,6 @@ fn loop_fn() {
         let mut esp_now = ESP_NOW.take().expect("Esp-now error in main");
         let mut value = VALUE;
 
-        // Receive value from neighbours
-        let r = esp_now.receive();
-        if let Some(r) = r {
-            println!("Received {:?}", r);
-            let data = r.get_data();
-            let received_value = data[0];
-            // Local voting protocol
-            // value = (value + received_value) / 2;
-        }
-
         // Send value to neighbours
         let mut next_send_time = NEXT_SEND_TIME.take().expect("Next send time error in main");
         if current_millis() >= next_send_time {
@@ -54,6 +44,16 @@ fn loop_fn() {
                 .unwrap()
                 .wait();
             println!("Send broadcast status: {:?}", status)
+        }
+
+        // Receive value from neighbours
+        let r = esp_now.receive();
+        if let Some(r) = r {
+            println!("Received data {:?}", r.get_data());
+            let data = r.get_data();
+            let received_value = data[0];
+            // Local voting protocol
+            value = (value + received_value) / 2;
         }
 
         VALUE = value;
