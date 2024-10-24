@@ -43,17 +43,17 @@ fn loop_fn() {
                 .send(&BROADCAST_ADDRESS, &[value])
                 .unwrap()
                 .wait();
-            println!("Send broadcast status: {:?}", status)
-        }
+            println!("Send broadcast status: {:?}", status);
 
-        // Receive value from neighbours
-        let r = esp_now.receive();
-        if let Some(r) = r {
-            println!("Received data {:?}", r.get_data());
-            let data = r.get_data();
-            let received_value = data[0];
-            // Local voting protocol
-            value = (value + received_value) / 2;
+            // Receive value from neighbours
+            let r = esp_now.receive();
+            if let Some(r) = r {
+                println!("Received data {:?}", r.get_data());
+                let data = r.get_data();
+                let received_value = data[0];
+                // Local voting protocol
+                value = (value + received_value) / 2;
+            }
         }
 
         VALUE = value;
