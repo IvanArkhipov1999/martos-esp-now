@@ -4,7 +4,7 @@ Presented here is a straightforward Rust example utilizing Martos with lvp proto
 
 A broadcast signal is periodically sent, and is also informed about the receipt of a broadcast signal from other microcontrollers. 
 
-The mean of value on several microcontollers is calculating. Here you can change value of exact agent.
+The mean of value on several microcontollers is calculating. [Here](https://github.com/IvanArkhipov1999/martos-esp-now/blob/main/esp32c6/src/main.rs#L20) you can change value of exact agent.
 
 ## How to install dependencies
 
