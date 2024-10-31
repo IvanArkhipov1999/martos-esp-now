@@ -18,6 +18,8 @@ static mut ESP_NOW: Option<EspNow> = None;
 static mut NEXT_SEND_TIME: Option<u64> = None;
 /// Value for local vote protocol.
 static mut VALUE: u8 = 1;
+/// Value for old received value.
+static mut PREV_NEIGHBOUR_VALUE: u8 = 0;
 
 /// Setup function for task to execute.
 fn setup_fn() {
@@ -51,8 +53,12 @@ fn loop_fn() {
                 println!("Received data {:?}", r.get_data());
                 let data = r.get_data();
                 let received_value = data[0];
-                // Local voting protocol
-                value = (value + received_value) / 2;
+                // Костыль
+                if PREV_NEIGHBOUR_VALUE != received_value {
+                    // Local voting protocol
+                    value = (value + received_value) / 2;
+                }
+                PREV_NEIGHBOUR_VALUE = received_value;
             }
         }
 
