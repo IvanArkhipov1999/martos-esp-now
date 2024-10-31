@@ -41,10 +41,7 @@ fn loop_fn() {
             // Send value to neighbours
             next_send_time = current_millis() + 5 * 1000;
             println!("Send value: {:?}", VALUE);
-            let status = esp_now
-                .send(&BROADCAST_ADDRESS, &[VALUE])
-                .unwrap()
-                .wait();
+            let status = esp_now.send(&BROADCAST_ADDRESS, &[VALUE]).unwrap().wait();
             println!("Send broadcast status: {:?}", status);
 
             // Receive value from neighbours
