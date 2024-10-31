@@ -18,7 +18,7 @@ static mut ESP_NOW: Option<EspNow> = None;
 static mut NEXT_SEND_TIME: Option<u64> = None;
 /// Value for local vote protocol.
 static mut VALUE: u8 = 1;
-/// Value for old received value.
+/// Variable for old received value. For костыль.
 static mut PREV_NEIGHBOUR_VALUE: u8 = 0;
 
 /// Setup function for task to execute.
@@ -34,15 +34,15 @@ fn setup_fn() {
 fn loop_fn() {
     unsafe {
         let mut esp_now = ESP_NOW.take().expect("Esp-now error in main");
-        let mut value = VALUE;
-
-        // Send value to neighbours
         let mut next_send_time = NEXT_SEND_TIME.take().expect("Next send time error in main");
+
+        // One "tick"
         if current_millis() >= next_send_time {
+            // Send value to neighbours
             next_send_time = current_millis() + 5 * 1000;
-            println!("Send value: {:?}", value);
+            println!("Send value: {:?}", VALUE);
             let status = esp_now
-                .send(&BROADCAST_ADDRESS, &[value])
+                .send(&BROADCAST_ADDRESS, &[VALUE])
                 .unwrap()
                 .wait();
             println!("Send broadcast status: {:?}", status);
@@ -53,16 +53,14 @@ fn loop_fn() {
                 println!("Received data {:?}", r.get_data());
                 let data = r.get_data();
                 let received_value = data[0];
-                // Костыль
+                // Костыль, works only for 2 agents
                 if PREV_NEIGHBOUR_VALUE != received_value {
                     // Local voting protocol
-                    value = (value + received_value) / 2;
+                    VALUE = (VALUE + received_value) / 2;
                 }
                 PREV_NEIGHBOUR_VALUE = received_value;
             }
         }
-
-        VALUE = value;
 
         NEXT_SEND_TIME = Some(next_send_time);
         ESP_NOW = Some(esp_now);
