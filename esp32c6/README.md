@@ -1,8 +1,10 @@
 # Rust example for risc-v esp32c6 architecture
 
-Presented here is a straightforward Rust example utilizing Martos with wifi usage.
+Presented here is a straightforward Rust example utilizing Martos with lvp protocol.
 
-A broadcast signal is periodically sent, and is also informed about the receipt of a broadcast signal from other microcontrollers.
+A broadcast signal is periodically sent, and is also informed about the receipt of a broadcast signal from other microcontrollers. 
+
+The mean of value on several microcontollers is calculating. Here you can change value of exact agent.
 
 ## How to install dependencies
 
